@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="reset.css" />
+    <link rel="stylesheet" href="index.css" />
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Colour Picker</title>
+  </head>
+  <body>
+    <div id="buttons">
+      <button id="minus">&minus;</button>
+      <button id="refresh">&circlearrowright;</button>
+      <button id="add">&plus;</button>
+    </div>
+    <div id="colour-picker"></div>
+    <script
+      src="https://code.jquery.com/jquery-3.6.4.min.js"
+      integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8="
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      function changeColour() {
+        let r = Math.floor(Math.random() * 256);
+        let g = Math.floor(Math.random() * 256);
+        let b = Math.floor(Math.random() * 256);
+        return [`rgb(${r},${g},${b})`, `rgb(${255 - r},${255 - g},${255 - b})`];
+      }
+      $("#add").click(() => {
+        $("#colour-picker").append("<div></div>");
+        let div = $("#colour-picker > div").last();
+        let colours = changeColour();
+        div.css("background-color", colours[0]);
+        div.css("color", colours[1]);
+        div.append(`<p>${colours[0]}</p>`);
+        let paragraph = div.find("p");
+        paragraph.hide();
+        div.hover(function () {
+          paragraph.show();
+        }, function () {
+          paragraph.hide();
+        });
+      });
+      $("#minus").click(() => {
+        let totalDivs = $("#colour-picker div").length;
+        if (totalDivs <= 1) return alert("Need more than one div");
+        $("#colour-picker > div").last().remove();
+      });
+      $("#refresh").click(() => {
+        $("#colour-picker > div").each(function () {
+          let colours = changeColour();
+          $(this).css("background-color", colours[0]);
+          $(this).css("color", colours[1]);
+          $(this).find('p').text(colours[0])
+        });
+      });
+    </script>
+  </body>
+</html>
